@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/linkhua/MasterlockCrackerTracker/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
@@ -35,3 +36,7 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+=======
+# Masterlock-Cracker-Tracker
+This project will implement a web-based as well as GUI-based program that assists in cracking and tracking the combinations of Master model 2002 and 2010 padlocks.
+>>>>>>> parent of e4717b3... Update README.md
