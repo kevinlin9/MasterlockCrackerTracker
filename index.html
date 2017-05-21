@@ -6,8 +6,71 @@
 		<style></style>
 		<script>
 		function initialize(){
+			fnums = [];
+			tnums = [];
+			
+			nbElement = document.getElementById("nb");
+			fnumInputElement = document.getElementById("fnum");
+			submitButtonElement = document.getElementById("submit");
+			tbElement = document.getElementById("tb");
+			
+			nbElementDefault = nbElement.innerHTML;
+			tbElementDefault = tbElement.innerHTML;
+			currNumBoxVal = nbElementDefault;
+			currTestBoxVal = tbElementDefault;
+			nbElement.innerHTML = nbElementDefault;
+			tbElement.innerHTML = tbElementDefault;
+
+			fnumInput = -999;
 			
 		}
+		function isValidNum(num){
+			if(num >= 0 && num <= 39 && num != ""){
+				return fnums.indexOf(num) == -1;
+			}
+			return false;
+		}
+		function populateFirstNumbersArray(num){
+			fnums.push(num);
+		}
+		function populateTestNumbersArray(startNum, iteration){
+			if(iteration == 1)
+				tnums.push(startNum + 2)
+			else
+				tnums.push(startNum + 4);
+		}
+		function pushIntoFBox(){
+			currNumBoxVal = nbElementDefault;
+			for(var i = 0; i < fnums.length; i++)
+				currNumBoxVal += fnums[i] + "\n";	
+			nbElement.innerHTML = currNumBoxVal;
+		}
+		function pushIntoTBox(s){
+			currTestBoxVal = tbElementDefault;
+			for(var i = 0; i < tnums.length; i++)
+				currTestBoxVal += tnums[i] + "\n";
+			tbElement.innerHTML = currTestBoxVal;				
+		}
+		function addTFButtons(){
+			
+		}
+		function goToFinalStep(){
+			// function call for True button
+		}
+		function getFinalCombination(){
+			// function call after user inputs the number where the dial clicked on
+		}
+		function work1(){
+			n = fnumInputElement.value;
+			if(!isValidNum(n))
+				return;
+			populateFirstNumbersArray(n);
+			pushIntoFBox(n);			
+			submitButtonElement.disabled = true;
+		}
+		function work2(){
+		}
+		
 		</script>
 	</head>
 	
@@ -15,15 +78,20 @@
 		<h1>This is a work in progress. Visual design will be implemented at a later date.   </h1>
 		<h1 class = "heading"> Masterlock Cracker Tracker </h1>
 		<div class = "container">
-			<!-- This will be the left column -->
-			<div class = "info"><b>About</b> <br/>This webpage's purpose is to keep track of the combination numbers you have tried in the process of cracking a master padlock (Model 2002 or 2010). Hopefully this will make the process easier to deal with.</div>
-			<div class = "info"><b>Instructions</b> <br/> Enter the number that you are testing as the first number. You will then enter T or F depending on whether or not the second number test worked or not. If the lock <b>does not click </b> after turning the dial clockwise and counter-clockwise, type F. If the lock <b>clicks </b> then type T. You will be prompted to enter the number the dial clicked on and then be shown the combination numbers of your lock.</div>
+			<!-- This will be the left column. It should contain information about the page. -->
+			<div class = "info"><b>About</b> <br/>This webpage's purpose is to keep track of the combination numbers you have tried in the process of cracking a master padlock (Model 2002 or 2010). This webpage will not explicitly show how to crack a lock, but show the process of cracking a lock. Hopefully this will make the process easier to deal with.</div>
+			<div class = "info"><b>Instructions</b> <br/> Enter the number that you are testing as the first number <b>Submitting nothing for the first combination number is the same as entering 0.</b> You will then click True or False depending on whether or not the second number test worked or not. If the lock <b>does not click </b> after turning the dial clockwise and counter-clockwise, click False. If the lock <b>clicks </b> then click True. You will be prompted to enter the number the dial clicked on and then be shown the combination numbers of your lock.</div>
 		</div>
 		<div class = "container">
 			<!-- This will be the middle column. It should contain the input elements and failed number tracker. -->
+			<div class = "numBox" id = "nb">The following <b>first</b> numbers have been tested: <br/> </div> <br/>
+			<input style = "width: 300px;" id = "fnum" type = "text" name = "fnum" placeholder = "Enter first combination number"></input>
+			<button class = "submit" id = "submit" onclick = "work1(); fnumInputElement.value = '';">Submit</button>
 		</div>
 		<div class = "container">
 			<!-- This will be the right column. It should contain the results of the cracking process. -->
+			<div class = "testBox" id = "tb"></div>
+			<div class = "resultBox" id = "rb">The combination to your lock is: <br/></div>
 		</div>
 		
 	</body>
