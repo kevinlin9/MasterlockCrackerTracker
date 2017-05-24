@@ -40,7 +40,7 @@
 		.testBox{
 			margin-bottom: 10%;
 		}
-		button {
+		button{
 			  min-width: 100px;
 			  font-size: 12pt;
 			  text-align: center;
@@ -48,11 +48,32 @@
 			  color: #fff;
 			  background-color: #4CAF50;
 			  border: none;
-			  border-radius: 10px;
-			  transition: background-color 2s;
+			  border-radius: 4px;
+			  transition: background-color 0.5s;
+		}
+		button span{
+			cursor: pointer;
+			display: inline-block;
+			position: relative;
+			transition: 0.5s;
+		}
+		button span:after{
+			content: '\0bb';
+			position: absolute;
+			opacity: 0;
+			top: 0;
+			right: -20px;
+			transition: 0.5s;
 		}
 		button:hover{
 			background-color: #3e8e41
+		}
+		button:hover span{
+			padding-right: 25px;
+		}
+		button:hover span:after{
+			opacity: 1;
+			right: 0;
 		}
 		input{
 			width: 200px;
@@ -105,25 +126,41 @@
 				currTestBoxVal += tnums[i] + "\n";
 			tbElement.innerHTML = currTestBoxVal;				
 		}
-		function addTFButtons(){
+		function addTFButtons(num){
+			currTextNode = document.createTextNode(num);
+			nextNum = num + 4;
+			numText = document.createElement("div");
+			numText.appendChild(currTextNode);
 			// create true and false buttons and append to tbElement
 			// true button runs goToFinalStep()
 			// false button runs addTFButtons(n + 4)
+			trueTextNode = document.createTextNode("True");
+			falseTextNode = document.createTextNode("False");
+			trueButton = document.createElement("BUTTON");
+			falseButton = document.createElement("BUTTON");
+			trueButton.setAttribute("onclick", "goToFinalStep(" + num + ");");
+			falseButton.setAttribute("onclick", "addTFButtons(" + nextNum + ");");
+			trueButton.appendChild(trueTextNode);
+			falseButton.appendChild(falseTextNode);
+			
+			tbElement.appendChild(numText);
+			tbElement.appendChild(trueButton);
+			tbElement.appendChild(falseButton);
 		}
-		function goToFinalStep(){
+		function goToFinalStep(num){
 			// function call for True button
 		}
 		function getFinalCombination(){
 			// function call after user inputs the number where the dial clicked on
 		}
 		function work1(){
-			n = fnumInputElement.value;
+			n = parseInt(fnumInputElement.value);
 			if(!isValidNum(n))
 				return;
 			populateFirstNumbersArray(n);
 			pushIntoFBox(n);			
 			submitButtonElement.disabled = true;
-			tbElement.addTFButtons(n);
+			addTFButtons(n);
 		}
 		function work2(){
 		}
@@ -144,7 +181,7 @@
 				<!-- This will be the middle column. It should contain the input elements and failed number tracker. -->
 				<div class = "numBox" id = "nb">The following <b>first</b> numbers have been tested: <br/> </div> <br/>
 				<input id = "fnum" type = "text" name = "fnum" placeholder = "Enter first combination number"></input>
-				<button class = "submit" id = "submit" onclick = "work1(); fnumInputElement.value = '';">Submit</button>
+				<button class = "submit" id = "submit" onclick = "work1(); fnumInputElement.value = '';"><span>Submit</span></button>
 			</div>
 			<div class = "container">
 				<!-- This will be the right column. It should contain the results of the cracking process. -->
