@@ -4,11 +4,25 @@
 	<head>
 		<title>Masterlock Cracker Tracker</title>
 		<style>
+		body{
+			background-color: limegreen;
+		}
+		.parallax{
+			position:absolute;
+			background-image: url("images/math.jpg");
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			text-align: left;
+			margin-right:10px;
+		}
 		.heading{
 			text-align: center;
+			color: black;
 		}
 		.container{
-			border: black solid 1px;
+			border: blue solid 1px;
 		}
 		.container{
 			display: inline-block;
@@ -25,6 +39,23 @@
 		}
 		.testBox{
 			margin-bottom: 10%;
+		}
+		button {
+			  min-width: 100px;
+			  font-size: 12pt;
+			  text-align: center;
+			  cursor: pointer;
+			  color: #fff;
+			  background-color: #4CAF50;
+			  border: none;
+			  border-radius: 10px;
+			  transition: background-color 2s;
+		}
+		button:hover{
+			background-color: #3e8e41
+		}
+		input{
+			width: 200px;
 		}
 		</style>
 		<script>
@@ -100,25 +131,26 @@
 		</script>
 	</head>
 	
-	<body onload = "initialize();">
-		<h1>This is a work in progress. Visual design will be implemented at a later date.   </h1>
+	<body onload = "initialize();">		
 		<h1 class = "heading"> Masterlock Cracker Tracker </h1>
-		<div class = "container">
-			<!-- This will be the left column. It should contain information about the page. -->
-			<div class = "info"><b>About</b> <br/>This webpage's purpose is to keep track of the combination numbers you have tried in the process of cracking a master padlock (Model 2002 or 2010). This webpage will not explicitly show how to crack a lock, but show the process of cracking a lock. Hopefully this will make the process easier to deal with.</div>
-			<div class = "info"><b>Instructions</b> <br/> Enter the number that you are testing as the first number. You will then click True or False depending on whether or not the second number test worked or not. If the lock <b>does not click </b> after turning the dial clockwise and counter-clockwise, click False. If the lock <b>clicks </b> then click True. You will be prompted to enter the number the dial clicked on and then be shown the combination numbers of your lock.</div>
+		<div class = "parallax">
+			<div class = "container">
+				<!-- This will be the left column. It should contain information about the page. -->
+				<div class = "info"><b>About</b> <br/>This webpage's purpose is to keep track of the combination numbers you have tried in the process of cracking a master padlock (Model 2002 or 2010). This webpage will not explicitly show how to crack a lock, but show the process of cracking a lock. Hopefully this will make the process easier to deal with.</div>
+				<div class = "info"><b>Instructions</b> <br/> Enter the number that you are testing as the first number. You will then click True or False depending on whether or not the second number test worked or not. If the lock <b>does not click </b> after turning the dial clockwise and counter-clockwise, click False. If the lock <b>clicks </b> then click True. You will be prompted to enter the number the dial clicked on and then be shown the combination numbers of your lock.</div>
+				<img src = "images\lock.jpg" style = "position: relative; display:inline-block; width: 90%; opacity: 0.8;">
+			</div>
+			<div class = "container">
+				<!-- This will be the middle column. It should contain the input elements and failed number tracker. -->
+				<div class = "numBox" id = "nb">The following <b>first</b> numbers have been tested: <br/> </div> <br/>
+				<input id = "fnum" type = "text" name = "fnum" placeholder = "Enter first combination number"></input>
+				<button class = "submit" id = "submit" onclick = "work1(); fnumInputElement.value = '';">Submit</button>
+			</div>
+			<div class = "container">
+				<!-- This will be the right column. It should contain the results of the cracking process. -->
+				<div class = "testBox" id = "tb">Testing the following numbers: </br></div>
+				<div class = "resultBox" id = "rb">The combination to your lock is: <br/></div>
+			</div>
 		</div>
-		<div class = "container">
-			<!-- This will be the middle column. It should contain the input elements and failed number tracker. -->
-			<div class = "numBox" id = "nb">The following <b>first</b> numbers have been tested: <br/> </div> <br/>
-			<input style = "width: 300px;" id = "fnum" type = "text" name = "fnum" placeholder = "Enter first combination number"></input>
-			<button class = "submit" id = "submit" onclick = "work1(); fnumInputElement.value = '';">Submit</button>
-		</div>
-		<div class = "container">
-			<!-- This will be the right column. It should contain the results of the cracking process. -->
-			<div class = "testBox" id = "tb">Testing the following numbers: </br></div>
-			<div class = "resultBox" id = "rb">The combination to your lock is: <br/></div>
-		</div>
-		
 	</body>
 </html>
