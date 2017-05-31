@@ -113,6 +113,9 @@
 			}
 			return false;
 		}
+		function isValidLastNum(fnum, snum, lnum){
+			return ((isValidNum(lnum)) && (lnum != fnum) && (lnum != snum));
+		}
 		function populateFirstNumbersArray(n){
 			fnums.push(parseInt(n));
 		}
@@ -135,7 +138,7 @@
 				falseButton = document.createElement("BUTTON");
 				
 				trueButton.setAttribute("onclick", "goToFinalStep(" + num + ");");
-				falseButton.setAttribute("onclick", "addTFButtons(" + (num + 4) + ", " + (iteration + 1) +"); trueButton.disabled = true; this.disabled = true;");
+				falseButton.setAttribute("onclick", "addTFButtons(" + (num + 4) + ", " + (iteration + 1) +"); this.disabled = true;");
 				
 				trueButton.appendChild(trueTextNode);
 				falseButton.appendChild(falseTextNode);
@@ -149,11 +152,25 @@
 			}
 		}
 		function goToFinalStep(num){
-			// function call for True button
-			
+			combinationString = "";
+			combinationString += fnums[fnums.length - 1] + " ";
+			combinationString += num + " ";
+			combinationString += getFinalCombination(num);
+			if(confirm("Do you want to add your lock's name? ex: V81 118111 24 16") == true)
+				combinationString += " (" + prompt("What is your lock's name?", "Personal Lock") + ")";
+			rbElement.innerHTML += combinationString;
 		}
-		function getFinalCombination(){
-			// function call after user inputs the number where the dial clicked on
+		function getFinalCombination(n){
+			var validity = false;
+			do{
+			var lastNum = parseInt(prompt("Where did the dial stop on after it clicked?"));
+			if(isValidLastNum(fnums[fnums.length - 1], n, lastNum))
+				validity = true;
+			} while(!validity);
+			if(((n % 2 == 0) && ((lastNum + 1) % 2 != 0)) || ((n % 2 != 0) && ((lastNum + 1) % 2 == 0)))
+				return lastNum;
+			else
+				return (lastNum + 1);
 			
 		}
 		function work(){
