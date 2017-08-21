@@ -1,229 +1,224 @@
 <!DOCTYPE HTML>
 <!-- Kevin Lin -->
 <html>
-	<head>
-		<title>Masterlock Cracker Tracker</title>
-		<style>
-		body{
-			background-color: limegreen;
-		}
-		.parallax{
-			position:absolute;
-			background-image: url("images/math.jpg");
-			background-attachment: fixed;
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: cover;
-			text-align: left;
-			margin-right:10px;
-		}
-		.heading{
-			text-align: center;
-			color: black;
-		}
-		.container{
-			border: blue solid 1px;
-		}
-		.container{
-			display: inline-block;
-			position: relative;
-			padding: 10px;
-			width: 31%;
-			vertical-align: text-top;
-			background-color: powderblue;
-		}
-		.info{
-			padding: 5px;
-			font-family: garamond;
-			font-size: 12pt;
-		}
-		.testBox{
-			margin-bottom: 10%;
-		}
-		button{
-			  min-width: 100px;
-			  font-size: 12pt;
-			  text-align: center;
-			  cursor: pointer;
-			  color: #fff;
-			  background-color: #4CAF50;
-			  border: none;
-			  border-radius: 4px;
-			  transition: background-color 0.5s;
-		}
-		button span{
-			cursor: pointer;
-			display: inline-block;
-			position: relative;
-			transition: 0.5s;
-		}
-		button span:after{
-			content: '\0bb';
-			position: absolute;
-			opacity: 0;
-			top: 0;
-			right: -20px;
-			transition: 0.5s;
-		}
-		button:hover{
-			background-color: #3e8e41
-		}
-		button:hover span{
-			padding-right: 25px;
-		}
-		button:hover span:after{
-			opacity: 1;
-			right: 0;
-		}
-		input{
-			width: 200px;
-		}
-		.resultBox{
-			width: 80%;
-			text-align: center;
-			
-		}
-		</style>
-		
-		<script>
-		function initialize(){
-			fnums = [];
-			iterations = 0;
-			maxIterations = 9;
-
-			nbElement = document.getElementById("nb");
-			tbElement = document.getElementById("tb");
-			rbElement = document.getElementById("rb");
-			
-			fnumInputElement = document.getElementById("fnum");
-			submitButtonElement = document.getElementById("submit");
-			
-			nbElementDefault = nbElement.innerHTML;
-			tbElementDefault = tbElement.innerHTML;
-			rbElementDefault = rbElement.innerHTML;
-			
-			currNumBoxVal = nbElementDefault;
-			currTestBoxVal = tbElementDefault;
-			currResultBoxVal = rbElementDefault;
-			
-			nbElement.innerHTML = nbElementDefault;
-			tbElement.innerHTML = tbElementDefault;
-			rbElement.innerHTML = rbElementDefault;
-			
-			fnumInput = -999;
-			
-			(function(){
-    new Clipboard('#copy-button');
-})();
-		}
-		function isValidNum(num){
-			if(num >= 0 && num <= 39){
-				return fnums.indexOf(num) == -1;
-			}
-			return false;
-		}
-		function isValidLastNum(fnum, snum, lnum){
-			return ((isValidNum(lnum)) && (lnum != fnum) && (lnum != snum));
-		}
-		function populateFirstNumbersArray(n){
-			fnums.push(parseInt(n));
-		}
-		function pushIntoFBox(){
-			currNumBoxVal = nbElementDefault;
-			for(var i = 0; i < fnums.length; i++)
-				currNumBoxVal += fnums[i] + "\n";
-			nbElement.innerHTML = currNumBoxVal;
-		}
-		function addTFButtons(num, iteration){
-			if(iteration < maxIterations){
-				currTextNode = document.createTextNode(num);
-				numText = document.createElement("div");
-				numText.appendChild(currTextNode);
-				
-				trueTextNode = document.createTextNode("True");
-				falseTextNode = document.createTextNode("False");
-				
-				trueButton = document.createElement("BUTTON");
-				falseButton = document.createElement("BUTTON");
-				
-				trueButton.setAttribute("onclick", "goToFinalStep(" + num + ");");
-				falseButton.setAttribute("onclick", "addTFButtons(" + (num + 4) + ", " + (iteration + 1) +"); this.disabled = true;");
-				
-				trueButton.appendChild(trueTextNode);
-				falseButton.appendChild(falseTextNode);
-
-				tbElement.appendChild(numText);
-				tbElement.appendChild(trueButton);
-				tbElement.appendChild(falseButton);
-			}
-			else{
-				reset();				
-			}
-		}
-		function goToFinalStep(num){
-			combinationString = "";
-			combinationString += fnums[fnums.length - 1] + " ";
-			combinationString += num + " ";
-			combinationString += getFinalCombination(num);
-			if(confirm("Do you want to add your lock's name? ex: V81 118111 24 16") == true)
-				combinationString += " (" + prompt("What is your lock's name?", "Personal Lock") + ")";
-			rbElement.innerHTML += combinationString;
-		}
-		function getFinalCombination(n){
-			var validity = false;
-			do{
-			var lastNum = parseInt(prompt("Where did the dial stop on after it clicked?"));
-			if(isValidLastNum(fnums[fnums.length - 1], n, lastNum))
-				validity = true;
-			} while(!validity);
-			if(((n % 2 == 0) && ((lastNum + 1) % 2 != 0)) || ((n % 2 != 0) && ((lastNum + 1) % 2 == 0)))
-				return lastNum;
-			else
-				return (lastNum + 1);
-			
-		}
-		function work(){
-			var n = parseInt(fnumInputElement.value);
-			if(!isValidNum(n))
-				return;
-			populateFirstNumbersArray(n);
-			pushIntoFBox(n);
-			submitButtonElement.disabled = true;
-			var num = n + 2;
-			addTFButtons(num, 0);
-		}
-		function reset(){
-			tbElement.innerHTML = tbElementDefault;
-			submitButtonElement.disabled = false;
-		}
-		</script>
-	</head>
-
-	<body onload = "initialize();">
-		<h1 class = "heading"> Masterlock Cracker Tracker </h1>
-		<div class = "parallax">
-			<div class = "container">
-				<!-- This will be the left column. It should contain information about the page. -->
-				<div class = "info"><b>About</b> <br/>This webpage's purpose is to keep track of the combination numbers you have tried in the process of cracking a master padlock (Model 2002 or 2010). This webpage will not explicitly show how to crack a lock, but show the process of cracking a lock. Hopefully this will make the process easier to deal with.</div>
-				<div class = "info"><b>Instructions</b> <br/> Enter the number that you are testing as the first number. <b>Entering nothing will count as entering 0.</b>You will then click True or False depending on whether or not the second number test worked or not. If the lock <b>does not click </b> after turning the dial clockwise and counter-clockwise, click False. If the lock <b>clicks </b> then click True. You will be prompted to enter the number the dial clicked on and then be shown the combination numbers of your lock.</div>
-				<img src = "images\lock.jpg" style = "position: relative; display:inline-block; width: 90%; opacity: 0.8;">
-			</div>
-			<div class = "container">
-				<!-- This will be the middle column. It should contain the input elements and failed number tracker. -->
-				<div class = "numBox" id = "nb">The following first numbers have been tested: <br/></div> <br/>
-				<input id = "fnum" type = "text" name = "fnum" placeholder = "Enter first combination number"></input>
-				<button class = "submit" id = "submit" onclick = "work(); fnumInputElement.value = '';"><span>Submit</span></button>
-			</div>
-			<div class = "container">
-				<!-- This will be the right column. It should contain the results of the cracking process. -->
-				<div class = "testBox" id = "tb">Testing the following numbers: <br/></div>
-				<h4>The combination to your lock is:</h4>
-				<textarea class = "resultBox" id = "rb"></textarea>
-				<button id = "copy-button" data-clipboard-action = "copy" data-clipboard-target = "#rb">Copy</button>
-				
-			</div>
-		</div>
-	</body>
+   <head>
+      <title>Masterlock Cracker Tracker</title>
+      <style>
+         body{
+         background-color: limegreen;
+         }
+         .parallax{
+         position:absolute;
+         background-image: url("images/math.jpg");
+         background-attachment: fixed;
+         background-position: center;
+         background-repeat: no-repeat;
+         background-size: cover;
+         text-align: left;
+         margin-right:10px;
+         }
+         .heading{
+         text-align: center;
+         color: black;
+         }
+         .container{
+         border: blue solid 1px;
+         }
+         .container{
+         display: inline-block;
+         position: relative;
+         padding: 10px;
+         width: 31%;
+         vertical-align: text-top;
+         background-color: powderblue;
+         }
+         .info{
+         padding: 5px;
+         font-family: garamond;
+         font-size: 12pt;
+         }
+         .testBox{
+         margin-bottom: 10%;
+         }
+         button{
+         min-width: 100px;
+         font-size: 12pt;
+         text-align: center;
+         cursor: pointer;
+         color: #fff;
+         background-color: #4CAF50;
+         border: none;
+         border-radius: 4px;
+         transition: background-color 0.5s;
+         }
+         button span{
+         cursor: pointer;
+         display: inline-block;
+         position: relative;
+         transition: 0.5s;
+         }		 
+         button span:after{
+         content: '\0bb';
+         position: absolute;
+         opacity: 0;
+         top: 0;
+         right: -20px;
+         transition: 0.5s;
+         }
+         button:hover{
+         background-color: #3e8e41
+         }
+         button:hover span{
+         padding-right: 25px;
+         }
+         button:hover span:after{
+         opacity: 1;
+         right: 0;
+         }
+         input{
+         width: 200px;
+         }
+         .resultBox{
+         width: 80%;
+         text-align: center;
+         }
+      </style>
+      <script>
+         function initialize(){
+         	fnums = [];
+         	iterations = 0;
+         	maxIterations = 9;
+         
+         	nbElement = document.getElementById("nb");
+         	tbElement = document.getElementById("tb");
+         	rbElement = document.getElementById("rb");
+         	
+         	fnumInputElement = document.getElementById("fnum");
+         	submitButtonElement = document.getElementById("submit");
+         	
+         	nbElementDefault = nbElement.innerHTML;
+         	tbElementDefault = tbElement.innerHTML;
+         	rbElementDefault = rbElement.innerHTML;
+         	
+         	currNumBoxVal = nbElementDefault;
+         	
+         	fnumInput = -999;
+         	(function(){
+           new Clipboard('#copy-button');
+         })();
+         }
+         function isValidNum(num){
+         	if(num >= 0 && num <= 39){
+         		return fnums.indexOf(num) == -1;
+         	}
+         	return false;
+         }
+         function isValidLastNum(fnum, snum, lnum){
+         	return ((isValidNum(lnum)) && (lnum != fnum) && (lnum != snum));
+         }
+         function populateFirstNumbersArray(n){
+         	fnums.push(parseInt(n));
+         }
+         function pushIntoFBox(){
+         	currNumBoxVal = nbElementDefault;
+         	for(var i = 0; i < fnums.length; i++)
+         		currNumBoxVal += fnums[i] + "\n";
+         	nbElement.innerHTML = currNumBoxVal;
+         }
+         function addTFButtons(num, iteration){
+         	if(iteration < maxIterations){
+         		currTextNode = document.createTextNode(num);
+         		numText = document.createElement("div");
+         		numText.appendChild(currTextNode);
+         		
+         		trueTextNode = document.createTextNode("True");
+         		falseTextNode = document.createTextNode("False");
+         		
+         		trueButton = document.createElement("BUTTON");
+         		falseButton = document.createElement("BUTTON");
+         		
+         		trueButton.setAttribute("onclick", "goToFinalStep(" + num + ");");
+         		falseButton.setAttribute("onclick", "addTFButtons(" + (num + 4) + ", " + (iteration + 1) +"); this.disabled = true;");
+         		
+         		trueButton.appendChild(trueTextNode);
+         		falseButton.appendChild(falseTextNode);
+         
+         		tbElement.appendChild(numText);
+         		tbElement.appendChild(trueButton);
+         		tbElement.appendChild(falseButton);
+         	}
+         	else{
+         		testReset();				
+         	}
+         }
+         function goToFinalStep(num){
+         	combinationString = "";
+         	combinationString += fnums[fnums.length - 1] + " ";
+         	combinationString += num + " ";
+         	combinationString += getFinalCombination(num);
+         	if(confirm("Do you want to add your lock's name? ex: V81 118111 24 16") == true)
+         		combinationString += " [" + prompt("What is your lock's name?", "Personal Lock") + "]";
+         	rbElement.innerHTML += combinationString;
+         }
+         function getFinalCombination(n){
+         	var validity = false;
+         	do{
+         	var lastNum = parseInt(prompt("Where did the dial stop on after it clicked?"));
+         	if(isValidLastNum(fnums[fnums.length - 1], n, lastNum))
+         		validity = true;
+         	} while(!validity);
+         	if(((n % 2 == 0) && ((lastNum + 1) % 2 != 0)) || ((n % 2 != 0) && ((lastNum + 1) % 2 == 0)))
+         		return lastNum;
+         	else
+         		return (lastNum + 1);
+         	
+         }
+         function process(){
+         	var n = parseInt(fnumInputElement.value);
+         	if(!isValidNum(n))
+         		return;
+         	populateFirstNumbersArray(n);
+         	pushIntoFBox(n);
+         	submitButtonElement.disabled = true;
+         	var num = n + 2;
+         	addTFButtons(num, 0);
+         }
+         function testReset(){
+         	tbElement.innerHTML = tbElementDefault;
+         	submitButtonElement.disabled = false;
+         }
+         function fullReset(){
+         fnums = [];
+         nbElement.innerHTML = nbElementDefault;
+         testReset();
+         tbElement.innerHTML = tbElementDefault;
+         	rbElement.innerHTML = rbElementDefault;
+         }
+      </script>
+   </head>
+   <body onload = "initialize();">
+      <h1 class = "heading">
+         <button class = "fullreset" onclick = "fullReset();"> Reset </button> Masterlock Cracker Tracker 
+      </h1>
+      <div class = "parallax">
+         <div class = "container">
+            <div class = "info"><b>About</b> <br/>This webpage's purpose is to keep track of the combination numbers you have tried in the process of cracking a master padlock (Model 2002 or 2010). This webpage will not explicitly show how to crack a lock, but show the process of cracking a lock. Hopefully this will make the process easier to deal with.</div>
+            <div class = "info"><b>Instructions</b> <br/> Enter the number that you are testing as the first number. You will then click True or False depending on whether or not the second number test worked or not. If the lock <b>does not click </b> after turning the dial clockwise and counter-clockwise, click False. If the lock <b>clicks </b> then click True. You will be prompted to enter the number the dial clicked on and then be shown the combination numbers of your lock.</div>
+            <img src = "images\lock.jpg" style = "position: relative; display:inline-block; width: 90%; opacity: 0.8;">
+         </div>
+         <div class = "container">
+            <div class = "numBox" id = "nb">The following first numbers have been tested: <br/></div>
+            <br/>
+            <input id = "fnum" type = "text" name = "fnum" placeholder = "Enter first combination number"></input>
+            <button class = "submit" id = "submit" onclick = "process(); fnumInputElement.value = '';"><span>Submit</span></button>
+         </div>
+         <div class = "container">
+            <div class = "testBox" id = "tb">Testing the following numbers: <br/></div>
+            <h4>The combination to your lock is:</h4>
+            <textarea class = "resultBox" id = "rb"></textarea>
+            <button id = "copy-button" data-clipboard-action = "copy" data-clipboard-target = "#rb">Copy</button>
+         </div>
+      </div>
+   </body>
 </html>
-
-<script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+<script src = "https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
