@@ -138,7 +138,13 @@
          		falseButton = document.createElement("BUTTON");
          		
          		trueButton.setAttribute("onclick", "goToFinalStep(" + num + ");");
-         		falseButton.setAttribute("onclick", "addTFButtons(" + (num + 4) + ", " + (iteration + 1) +"); this.disabled = true;");
+         		if(num + 4 >= 40){
+					var n = num - 36; 
+					falseButton.setAttribute("onclick", "addTFButtons(" + (n) + ", " + (iteration + 1) +"); this.disabled = true;");
+				}
+				else{
+					falseButton.setAttribute("onclick", "addTFButtons(" + (num + 4) + ", " + (iteration + 1) +"); this.disabled = true;");
+				}
          		
          		trueButton.appendChild(trueTextNode);
          		falseButton.appendChild(falseTextNode);
